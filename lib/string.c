@@ -769,7 +769,6 @@ EXPORT_SYMBOL(__sysfs_match_string);
 void *memset(void *s, int c, size_t count)
 {
 	union types dest = { .as_u8 = s };
-	
 	if (count >= MIN_THRESHOLD) {
 		unsigned long cu = (unsigned long)c;
 
@@ -796,6 +795,7 @@ void *memset(void *s, int c, size_t count)
 			*dest.as_ulong++ = cu;
 	}
 
+	/* copy the remainder */
 	while (count--)
 		*dest.as_u8++ = c;
 	return s;

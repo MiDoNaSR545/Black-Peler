@@ -20,8 +20,8 @@
 #include <linux/wakeup_reason.h>
 #include <linux/alarmtimer.h>
 #include <linux/suspend.h>
-#include <drm/drm_notifier_mi.h>
-
+#include <drm/drm_notifier.h>
+#include <linux/msm_drm_notify.h>
 
 #define WS_CNT_MASK 0xffff
 #define WS_CNT_POWERKEY (1<<0)

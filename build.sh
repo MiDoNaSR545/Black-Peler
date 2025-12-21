@@ -60,30 +60,31 @@ done
 
 # ---------------- KERNELSU (100% SAFE — WORKS FIRST TIME) ----------------
 ksu_enabled=false
-echo -e "${YELLOW}\nInclude KernelSU (susfs)?${NC}"
+echo -e "${YELLOW}\nInclude KernelSU (KernelSU-Next)?${NC}"
 select ksu in "Yes" "No"; do
     case $ksu in
         Yes )
-            echo -e "${GREEN}Adding KernelSU Next (susfs) — safely...${NC}"
+            echo -e "${GREEN}Adding KernelSU-Next (next branch, legacy mode) — safely...${NC}"
+            # Safety: Download and clean dangerous lines before execution
+            KSU_SCRIPT="/tmp/ksu_next_setup_$(date +%s).sh"
+            curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" -o "$KSU_SCRIPT"
 
-            # Download to temp file
-            KSU_SCRIPT="/tmp/ksu_setup_$(date +%s).sh"
-            curl -LSs "https://raw.githubusercontent.com/Mr-Morat/KernelSU-Next/susfs/kernel/setup.sh" -o "$KSU_SCRIPT"
-
-            # Remove ALL possible terminal-killing lines (covers current and future variants)
+            # Remove potential terminal-killing or misleading lines
             sed -i '/kill.*[[:space:]]\+$$/d' "$KSU_SCRIPT"
             sed -i '/kill.*$PPID/d' "$KSU_SCRIPT"
             sed -i '/exec[[:space:]]\+>&-/d' "$KSU_SCRIPT"
             sed -i '/exec[[:space:]]\+>&[[:space:]]*$/d' "$KSU_SCRIPT"
-            sed -i '/exit[[:space:]]\+0/d' "$KSU_SCRIPT"  # some versions fake-exit first
+            sed -i '/exit[[:space:]]\+0/d' "$KSU_SCRIPT"  # fake early exit
 
-            # Run it safely
-            bash "$KSU_SCRIPT" susfs
+            # Run the cleaned script with 'legacy' argument
+            bash "$KSU_SCRIPT" legacy
+
+            # Cleanup
             rm -f "$KSU_SCRIPT"
 
             zip_prefix="${zip_prefix}_KSU"
             ksu_enabled=true
-            echo -e "${GREEN}KernelSU integrated successfully${NC}"
+            echo -e "${GREEN}KernelSU-Next (legacy mode) integrated successfully${NC}"
             break
             ;;
         No )
@@ -92,7 +93,6 @@ select ksu in "Yes" "No"; do
             ;;
     esac
 done
-
 # ---------------- TOOLCHAINS ----------------
 mkdir -p toolchain
 

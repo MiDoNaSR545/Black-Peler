@@ -2259,7 +2259,6 @@ long _do_fork(unsigned long clone_flags,
 	int trace = 0;
 	long nr;
 
-<<<<<<< HEAD
 	if (task_is_zygote(current)) {
 #ifdef CONFIG_KPROFILES
 		/*
@@ -2284,12 +2283,6 @@ long _do_fork(unsigned long clone_flags,
 		cpu_input_boost_kick_max(50);
 		devfreq_boost_kick_max(DEVFREQ_CPU_LLCC_DDR_BW, 50);
 #endif
-	}
-=======
-	/* Boost DDR bus to the max for 50 ms when userspace launches an app */
-	if (task_is_zygote(current))
-		devfreq_boost_kick_max(DEVFREQ_CPU_LLCC_DDR_BW, 50);
->>>>>>> f1837fa2ba36 (kernel: Boost DDR bus for a short amount of time when zygote forks)
 
 	/*
 	 * Determine whether and which event to report to ptracer.  When

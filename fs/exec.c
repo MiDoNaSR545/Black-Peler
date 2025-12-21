@@ -1886,14 +1886,10 @@ orig_flow:
 			zygote32_sig = current->signal;
 		else if (unlikely(!strcmp(filename->name, ZYGOTE64_BIN)))
 			zygote64_sig = current->signal;
-<<<<<<< HEAD
 		else if (unlikely(!strncmp(filename->name, HWCOMPOSER_BIN_OLD, strlen(HWCOMPOSER_BIN_OLD)) ||
                   !strncmp(filename->name, HWCOMPOSER_BIN_QTI, strlen(HWCOMPOSER_BIN_QTI)))) {
     current->flags |= PF_PERF_CRITICAL;
     set_cpus_allowed_ptr(current, cpu_perf_mask);
-}
-=======
->>>>>>> f1837fa2ba36 (kernel: Boost DDR bus for a short amount of time when zygote forks)
 	}
 
 	/* execve succeeded */
